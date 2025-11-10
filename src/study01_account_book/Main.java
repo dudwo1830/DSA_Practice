@@ -10,6 +10,6 @@ public class Main {
 		service.addTransaction("2025-11-09", "교통", "중앙->교대->집", 1800);
 		service.addTransaction("2025-11-09", "식비", "햄버거", 7600);
 
-		service.showAll();
+		service.showMonthlySummary(2025, 11);
 	}
 }
