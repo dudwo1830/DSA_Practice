@@ -25,5 +25,13 @@ public class TransactionRepository {
 		list.removeIf(t -> t.getId() == id);
 	}
 
-	
+	// csv용 문자열 반환
+	public String transactionToStringForCsv() {
+		String result = "";
+		for (Transaction transaction : list) {
+			result += transaction.toStringForCsv();
+			result += '\n';
+		}
+		return result;
+	}
 }

@@ -1,5 +1,8 @@
 package study01_account_book.service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -73,7 +76,14 @@ public class AccountService {
 	}
 
 	public void saveToCsv(String path) {
+		
 		// TODO CSV 저장
+		try {
+			Files.writeString(Path.of(path), repo.transactionToStringForCsv());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void loadFromCsv(String path) {

@@ -11,5 +11,6 @@ public class Main {
 		service.addTransaction("2025-11-09", "식비", "햄버거", 7600);
 
 		service.showMonthlySummary(2025, 11);
+		service.saveToCsv("practice/src/study01_account_book/data/accountService.csv");
 	}
 }

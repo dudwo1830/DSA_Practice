@@ -17,15 +17,35 @@ public class Transaction {
         this.amount = amount;
     }
 
-    public int getId() { return id; }
-    public LocalDate getDate() { return date; }
-    public Category getCategory() { return category; }
-    public String getDescription() { return description; }
-    public int getAmount() { return amount; }
+    public int getId() {
+        return id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
 
     @Override
     public String toString() {
         return String.format("[%d] %s | %s | %s | %d원",
+                id, date, category.getLabel(), description, amount);
+    }
+
+    // csv용 문자열 반환
+    public String toStringForCsv() {
+        return String.format("%d,%s,%s,%s,%d",
                 id, date, category.getLabel(), description, amount);
     }
 }
