@@ -1,6 +1,5 @@
 package study01_account_book.service;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -44,27 +43,33 @@ public class AccountService {
 				.filter(t -> t.getDate().getYear() == year && t.getDate().getMonthValue() == month)
 				.toList();
 
-		filtered.forEach(System.out::println);
 		// TODO 🔥 여기서부터 네가 작성할 부분
 		// 1) 전체 합계
-		int monthlyTotal = filtered.stream().mapToInt(x -> x.getAmount()).sum();
-		System.out.println(monthlyTotal);
-
+		int monthlyTotal = getMonthlyTotal(filtered);
 		// 2) 카테고리별 합계 (groupingBy(Category, summingInt(Transaction::getAmount)))
 		Map<Category, Integer> sumByCategory = filtered.stream()
-				.collect(Collectors.groupingBy(Transaction::getCategory, Collectors.summingInt(Transaction::getAmount)));
-		;
-		// TODO 출력 형태 꾸미기
-		System.out.println(sumByCategory);
+				.collect(Collectors.groupingBy(
+						Transaction::getCategory, Collectors.summingInt(Transaction::getAmount)));
 
-		// 3) 내림차순 정렬
-		filtered.stream().sorted((x, y) -> {
-			return y.getId() - x.getId();
-		}).forEach(System.out::println);
+		// 3) Amount 기준 내림차순 정렬
+		List<Map.Entry<Category, Integer>> sortedResult = sumByCategory.entrySet().stream()
+				.sorted(Map.Entry.<Category, Integer>comparingByValue().reversed())
+				.toList();
 
-		// 4) % 비율 계산
-
+		// 4) 합계 대비 % 비율 계산
 		// 5) 보기 좋은 출력 형식 구성
+		// monthlyTotal: totalAmount
+		// category1 | amount (%)
+		// category2 | amount (%)
+		// ...
+		System.out.println("월 합계: " + String.format("%,d원", monthlyTotal));
+		sortedResult.stream().forEach(data -> {
+			double rate = (data.getValue() * 1.0 / monthlyTotal) * 100;
+			String msg = data.getKey().getLabel() + " | "
+					+ String.format("%,d원", data.getValue()) + " | "
+					+ Math.round(rate) + "%";
+			System.out.println(msg);
+		});
 	}
 
 	public void saveToCsv(String path) {
@@ -73,5 +78,9 @@ public class AccountService {
 
 	public void loadFromCsv(String path) {
 		// TODO CSV 불러오기
+	}
+
+	private int getMonthlyTotal(List<Transaction> list) {
+		return list.stream().mapToInt(x -> x.getAmount()).sum();
 	}
 }

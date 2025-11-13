@@ -24,4 +24,6 @@ public class TransactionRepository {
 	public void deleteById(int id) {
 		list.removeIf(t -> t.getId() == id);
 	}
+
+	
 }
