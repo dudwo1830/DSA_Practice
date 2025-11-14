@@ -76,18 +76,26 @@ public class AccountService {
 	}
 
 	public void saveToCsv(String path) {
-		
 		// TODO CSV 저장
 		try {
 			Files.writeString(Path.of(path), repo.transactionToStringForCsv());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	public void loadFromCsv(String path) {
 		// TODO CSV 불러오기
+		try {
+			String content = Files.readString(Path.of(path));
+			String[] col = content.split("\n");
+			for (String str : col) {
+				String[] data = str.split(",");
+				addTransaction(data[1], data[2], data[3], Integer.parseInt(data[4]));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private int getMonthlyTotal(List<Transaction> list) {
