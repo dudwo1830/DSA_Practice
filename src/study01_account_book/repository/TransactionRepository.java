@@ -34,4 +34,9 @@ public class TransactionRepository {
 		}
 		return result;
 	}
+
+	public void reset() {
+		list.clear();
+		nextId = 1;
+	}
 }
